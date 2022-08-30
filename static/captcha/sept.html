@@ -5,6 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>happy september</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet">
 </head>
 
 <style>
@@ -13,14 +17,17 @@
     }
 
     .wrapper {
+        position: relative;
+        overflow: hidden;
         margin: 0;
         display: flex;
         justify-content: center;
         align-items: center;
         height: 100vh;
+        width: 100vw;
         color: white;
-        font-size: 16px;
-        font-family: 'Courier New', Courier, monospace;
+        font-size: 32px;
+        font-family: 'Caveat', cursive;
         background-color: #09101c;
     }
 
@@ -40,6 +47,86 @@
     .letter > img, .letter > audio {
         align-self: center;
     }
+
+    .letter > img {
+        margin-top: 10px;
+        margin-bottom: 15px;
+        z-index: 10000;
+        width: 50%;
+    }
+
+    .signature {
+        align-self: flex-end;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: flex-end;
+    }
+
+    #curvedarrow {
+      position: absolute;
+      font-size: 16px;
+      left: -10px;
+      top: 0px;
+      width: 0;
+      height: 0;
+      border-top: 9px solid transparent;
+      border-right: 9px solid white;
+      transform: rotate(10deg);
+    }
+    #curvedarrow:after {
+      content: "";
+      position: absolute;
+      border: 0 solid transparent;
+      border-top: 3px solid white;
+      border-radius: 20px 0 0 0;
+      top: -12px;
+      left: -9px;
+      width: 12px;
+      height: 12px;
+      transform: rotate(45deg);
+    }
+    #star-five {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      display: block;
+      color: white;
+      width: 0px;
+      height: 0px;
+      border-right: 100px solid transparent;
+      border-bottom: 70px solid white;
+      border-left: 100px solid transparent;
+      transform: rotate(35deg) scale(0.03);
+      transform-origin: 0 0;
+    }
+    #star-five:before {
+      border-bottom: 80px solid white;
+      border-left: 30px solid transparent;
+      border-right: 30px solid transparent;
+      position: absolute;
+      height: 0;
+      width: 0;
+      top: -45px;
+      left: -65px;
+      display: block;
+      content: '';
+      transform: rotate(-35deg);
+    }
+    #star-five:after {
+      position: absolute;
+      display: block;
+      color: red;
+      top: 3px;
+      left: -105px;
+      width: 0px;
+      height: 0px;
+      border-right: 100px solid transparent;
+      border-bottom: 70px solid white;
+      border-left: 100px solid transparent;
+      transform: rotate(-70deg);
+      content: '';
+    }
 </style>
 
 <div class="wrapper">
@@ -50,10 +137,77 @@
         of the time i first asked you to be mine
     </div>
     <img src="https://i.imgur.com/HShsWoH.png"/>
-    <audio controls autoplay loop>
-        <source src="https://dl.dropboxusercontent.com/s/14np4a52mgx9isv/keshi.mp3" type="audio/mpeg"></source>
-        i sang you a song but you're browser can't render it :(
-    </audio>
+    <div style="position: relative; display: flex; justify-content: center; align-self: center;">
+        <div id="curvedarrow"> <div style="transform: translate(-40px, -20px)"> play! </div> </div>
+        <audio controls autoplay loop>
+            <source src="https://dl.dropboxusercontent.com/s/7kzy7bxtilg4cyx/keshi%20-%20UNDERSTAND.mp3?dl=0" type="audio/mpeg"></source>
+            i sang you a song but you're browser can't render it :(
+        </audio>
+    </div>
+    <div class="signature">
+        <div>
+            with love,
+        </div>
+        <div>
+            Sam
+        </div>
+    </div>
+
+    <div id="star-container"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.6.1/d3.min.js"></script>
+
+    <script defer>
+        let container = document.querySelector(".wrapper");
+        let width = container.clientWidth;
+        let height = container.clientHeight;
+        const velocity = [200, 200];
+        let num_stars = 100;
+        let stars = [];
+        for (let i = 0; i < num_stars; i++) {
+            let x = Math.random() * width;
+            let y = Math.random() * height;
+            let vx = Math.random() * velocity[0]; // * Math.cos(Math.random() * Math.PI * 2);
+            let vy = Math.random() * velocity[1]; // * Math.sin(Math.random() * Math.PI * 2);
+            stars.push([x, y, vx, vy]);
+        }
+        d3.select("#star-container")
+            .selectAll("div")
+            .data(stars)
+            .join("div")
+            .attr("id", "star-five")
+            .style("left", (d) => `${d[0]}px`)
+            .style("top", (d) => `${d[1]}px`)
+
+        function mod(n, m) {
+            return ((n % m) + m) % m;
+        }
+
+        let start;
+        function frame(timestamp) {
+            if (start === undefined) 
+                start = timestamp;
+            let dt = (timestamp - start) / 1000;
+            start = timestamp;
+
+            d3.selectAll("#star-five")
+                .style("left", (d, idx) => {
+                    let [x, y, vx, vy] = d;
+                    d[0] = mod(d[0] + dt * vx, width);
+                    return `${d[0]}px`;
+                })
+                .style("top", (d, idx) => {
+                    let [x, y, vx, vy] = d;
+                    d[1] = mod(d[1] + dt * vy, height);
+                    return `${d[1]}px`;
+                });
+
+            window.requestAnimationFrame(frame);
+        }
+
+        window.requestAnimationFrame(frame);
+
+    </script>
 </div>
 
 </div>
