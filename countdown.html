@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+    <title> Countdown </title>
+</head>
+
+<style>
+    html {
+        padding: 0;
+        margin: 0px;
+    }
+
+    body {
+        padding: 0px;
+        margin: 0px;
+        width: 100vw;
+        height: 100vh;
+
+        background-color: #ffeccb;
+        background-image: url("https://i.pinimg.com/originals/7a/c3/2e/7ac32e09cfc6c8c978f14daa598195d1.gif");
+        background-position: center;
+        background-size: contain;
+        background-repeat: no-repeat;
+
+        font-family: 'Press Start 2P', cursive;
+        color: white;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .countdown-container {
+        text-shadow: 1.5px 1.5px black;
+
+        display: flex;
+        width: fit-content;
+        height: fit-content;
+
+        justify-content: center;
+        flex-direction: column;
+        font-size: 25px;
+        
+        position: absolute;
+        bottom: 25px;
+        left: 220px;
+    }
+</style>
+
+<body>
+    
+    <div class="countdown-container">
+        <div id="days"> </div>
+        <div id="hours"> </div>
+        <div id="minutes"> </div>
+        <div id="seconds"> </div>
+    </div>
+
+    <script>
+        const days_element    = document.getElementById("days");
+        const hours_element   = document.getElementById("hours");
+        const minutes_element = document.getElementById("minutes");
+        const seconds_element = document.getElementById("seconds");
+
+        const end_date = new Date("2022-12-09T11:00");
+        console.log(end_date)
+        const ONE_YEAR   = 365; // days
+        const ONE_DAY    = 24;  // hours
+        const ONE_HOUR   = 60;  // minutes
+        const ONE_MINUTE = 60;  // seconds
+
+        function round(num, decimal_places) {
+            decimal_places ??= 0;
+            return (Math.floor(num * 10**decimal_places) / 10**decimal_places).toFixed(decimal_places);
+        }
+
+        function setDate() {
+            const ms_diff = end_date.getTime() - Date.now();
+            const days    = round((ms_diff / 1000 / 60  / 60 / 24) % ONE_YEAR, 0);
+            const hours   = round((ms_diff / 1000 / 60 / 60) % ONE_DAY       , 0);
+            const minutes = round((ms_diff / 1000 / 60) % ONE_HOUR           , 0);
+            const seconds = round((ms_diff / 1000) % ONE_MINUTE              , 1);
+            days_element.textContent    = `${days} days`
+            hours_element.textContent   = `${hours} hours`
+            minutes_element.textContent = `${minutes} minutes`
+            seconds_element.textContent = `${seconds} seconds`
+        }
+
+        setDate()
+        setInterval(setDate, 1);
+
+    </script>
+
+</body>
+</html>
