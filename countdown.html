@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="https://preview.redd.it/oncs40j2km951.gif?format=png8&s=e298e119f30c108c15d283c18fabc8aee45d858b">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Sacramento&family=Source+Code+Pro:wght@900&display=swap" rel="stylesheet">
 
     <title> Countdown </title>
 </head>
@@ -24,44 +25,111 @@
         width: 100vw;
         height: 100vh;
 
-        background-color: #ffeccb;
-        background-image: url("https://i.pinimg.com/originals/7a/c3/2e/7ac32e09cfc6c8c978f14daa598195d1.gif");
-        background-position: center;
-        background-size: contain;
-        background-repeat: no-repeat;
 
-        font-family: 'Press Start 2P', cursive;
+        font-family: 'Sacramento', cursive;
         color: white;
+
+        animation: gradient 15s ease infinite;
+        background: linear-gradient(-45deg, #fe8593, #915ded);
+        background-size: 200% 200%;
 
         display: flex;
         justify-content: center;
         align-items: center;
     }
 
-    .countdown-container {
-        text-shadow: 1.5px 1.5px black;
+    @keyframes gradient {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
 
+    .clock-wrapper {
         display: flex;
-        width: fit-content;
-        height: fit-content;
-
-        justify-content: center;
-        flex-direction: column;
+        text-shadow: 1.5px 1.5px black;
         font-size: 25px;
-        
+
         position: absolute;
-        bottom: 25px;
-        left: 220px;
+        top: 50%;
+        left: 20%;
+        transform: translate(0px, -50%);
+    }
+    
+    @media screen and (max-width: 1150px) {
+        .clock-wrapper {
+            top: 15%;
+            left: 50%;
+            transform: translate(-50%, 0%);
+        }
+    }
+
+    .clock-container {
+        display: flex;
+        height: fit-content;
+    
+        width: 3em;
+        justify-content: center;
+        align-items: flex-end;
+        flex-direction: column;
+    }
+    
+    .clock-text {
+        display: flex;
+        height: fit-content;
+    
+        width: 3em;
+        margin-left: 10px;
+        justify-content: center;
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .image-container {
+        height: 80vh;
+        animation: floating 2s ease infinite;
+        animation-direction: alternate;
+    }
+
+    @keyframes floating {
+        0% {
+            height: 80vh;
+        }
+        100% {
+            height: 83vh;
+        }
+    }
+
+    .image-container > img {
+        width: 100%;
+        height: 100%;
     }
 </style>
 
 <body>
     
-    <div class="countdown-container">
-        <div id="days"> </div>
-        <div id="hours"> </div>
-        <div id="minutes"> </div>
-        <div id="seconds"> </div>
+    <div class="image-container">
+        <img src="https://i.ibb.co/LZwR7cf/5i7z8nj42qg41.png"/>
+    </div>
+    
+    <div class="clock-wrapper">
+        <div class="clock-container">
+            <div id="days"> </div>
+            <div id="hours"> </div>
+            <div id="minutes"> </div>
+            <div id="seconds"> </div>
+        </div>
+        <div class="clock-text">
+            <div> days </div>
+            <div> hours </div>
+            <div> minutes </div>
+            <div> seconds </div>
+        </div>
     </div>
 
     <script>
@@ -70,8 +138,8 @@
         const minutes_element = document.getElementById("minutes");
         const seconds_element = document.getElementById("seconds");
 
-        const end_date = new Date("2022-12-09T23:00-06:00");
-        console.log(end_date)
+        // CST is -06:00, PST is is -08:00
+        const end_date = new Date("2023-02-17T09:00-08:00");
         const ONE_YEAR   = 365; // days
         const ONE_DAY    = 24;  // hours
         const ONE_HOUR   = 60;  // minutes
@@ -88,10 +156,10 @@
             const hours   = round((ms_diff / 1000 / 60 / 60) % ONE_DAY       , 0);
             const minutes = round((ms_diff / 1000 / 60) % ONE_HOUR           , 0);
             const seconds = round((ms_diff / 1000) % ONE_MINUTE              , 1);
-            days_element.textContent    = `${days} days`
-            hours_element.textContent   = `${hours} hours`
-            minutes_element.textContent = `${minutes} minutes`
-            seconds_element.textContent = `${seconds} seconds`
+            days_element.textContent    = `${days}`
+            hours_element.textContent   = `${hours}`
+            minutes_element.textContent = `${minutes}`
+            seconds_element.textContent = `${seconds}`
         }
 
         setDate()
