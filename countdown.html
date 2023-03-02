@@ -8,8 +8,8 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Sacramento&family=Source+Code+Pro:wght@900&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap" rel="stylesheet">
+    
     <title> Countdown </title>
 </head>
 
@@ -26,27 +26,32 @@
         height: 100vh;
 
 
-        font-family: 'Sacramento', cursive;
+        font-family: 'Gloria Hallelujah', cursive;
         color: white;
 
         animation: gradient 15s ease infinite;
-        background: linear-gradient(-45deg, #fe8593, #915ded);
+        background: rgb(254,215,0);
+        background: radial-gradient(circle, rgba(254,215,0,1) 0%, rgba(254,132,0,1) 96%);
+        background-position: center;
         background-size: 200% 200%;
-
+        
         display: flex;
         justify-content: center;
         align-items: center;
     }
-
+    
     @keyframes gradient {
         0% {
-            background-position: 0% 50%;
+            background-size: 200% 200%;
+            /* background-position: 0% 50%; */
         }
         50% {
-            background-position: 100% 50%;
+            background-size: 400% 400%;
+            /* background-position: 100% 50%; */
         }
         100% {
-            background-position: 0% 50%;
+            background-size: 200% 200%;
+            /* background-position: 0% 50%; */
         }
     }
 
@@ -58,10 +63,11 @@
         position: absolute;
         top: 50%;
         left: 20%;
-        transform: translate(0px, -50%);
+        transform: translate(-50%, -50%);
+
     }
     
-    @media screen and (max-width: 1150px) {
+    @media screen and (max-width: 881px) {
         .clock-wrapper {
             top: 15%;
             left: 50%;
@@ -114,7 +120,7 @@
 <body>
     
     <div class="image-container">
-        <img src="https://i.ibb.co/LZwR7cf/5i7z8nj42qg41.png"/>
+        <img src="https://i.giphy.com/media/Ck5RsRJfjSp7YPHQOn/giphy.webp"/>
     </div>
     
     <div class="clock-wrapper">
@@ -139,7 +145,7 @@
         const seconds_element = document.getElementById("seconds");
 
         // CST is -06:00, PST is is -08:00
-        const end_date = new Date("2023-02-17T21:00-08:00");
+        const end_date = new Date("2023-03-22T07:00-06:00");
         const ONE_YEAR   = 365; // days
         const ONE_DAY    = 24;  // hours
         const ONE_HOUR   = 60;  // minutes
